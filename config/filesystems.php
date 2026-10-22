@@ -50,7 +50,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => public_path('storage'), // host without symlink support: serve intended public uploads directly from public/storage
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
