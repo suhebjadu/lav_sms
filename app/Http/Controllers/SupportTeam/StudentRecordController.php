@@ -22,7 +22,8 @@ class StudentRecordController extends Controller
 
    public function __construct(LocationRepo $loc, MyClassRepo $my_class, UserRepo $user, StudentRepo $student)
    {
-       $this->middleware('teamSA', ['only' => ['edit','update', 'reset_pass', 'create', 'store', 'graduated'] ]);
+       $this->middleware('teamSA', ['only' => ['edit','update', 'reset_pass', 'create', 'store', 'graduated', 'not_graduated'] ]);
+        $this->middleware('teamSAT', ['only' => ['index'] ]);
        $this->middleware('super_admin', ['only' => ['destroy',] ]);
 
         $this->loc = $loc;
@@ -30,6 +31,12 @@ class StudentRecordController extends Controller
         $this->user = $user;
         $this->student = $student;
    }
+
+    public function index()
+    {
+        $mc = $this->my_class->all()->first();
+        return $mc ? redirect()->route('students.list', $mc->id) : Qs::goWithDanger();
+    }
 
     public function reset_pass($st_id)
     {
